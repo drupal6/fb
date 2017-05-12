@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<servers>
+	<server>
+		<server-port>7000</server-port>
+		<boss-num>2</boss-num>
+		<worker-num>5</worker-num>
+	</server>
+</servers>
