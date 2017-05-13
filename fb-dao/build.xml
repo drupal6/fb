@@ -1,0 +1,14 @@
+<project name="dao" basedir=".">
+	
+	<property name="proto-path" value="D:/protoc-2.5.0-win32/protoc"/>
+	<property name="bean-path" value="./proto/bean/*.proto"/>
+	
+	<!--proto文件生成java bean文件 -->
+	<target name='build-bean'>
+		<exec executable="${proto-path}">
+			<arg value="--java_out=./src/main/java/"/>
+			<arg value="${bean-path}"/>
+		</exec>
+	</target>
+				
+</project>

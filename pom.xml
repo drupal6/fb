@@ -29,5 +29,30 @@
 		    <artifactId>protobuf-java</artifactId>
 		    <version>3.2.0</version>
 		</dependency>
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>6.0.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.jolbox</groupId>
+		    <artifactId>bonecp</artifactId>
+		    <version>0.8.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-dbutils</groupId>
+			<artifactId>commons-dbutils</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-dbcp2</artifactId>
+		    <version>2.1.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-pool2</artifactId>
+		    <version>2.4.2</version>
+		</dependency>
 	</dependencies>
 </project>

@@ -1,0 +1,12 @@
+package com.ly.proto.message;
+
+option java_package = "com.bean.game.proto";
+option java_outer_classname = "PlayerItemBeanMsg";
+
+message PlayerItemBean {
+	optional int32 id	=1;	//主键
+	optional int32 baseItemId	=2;	//基础道具id
+	optional int32 num	=3;	//数量
+	optional int32 type	=4;	//道具类型
+}
+
