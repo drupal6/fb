@@ -1,5 +1,7 @@
 package com.net.common.codec;
 
+import java.nio.ByteBuffer;
+
 /**
  * 消息
  * 
@@ -54,4 +56,17 @@ public class Message {
 		return getHeader().getCommandId();
 	}
 
+	
+	public byte[] toHeaderByteArray() {
+		ByteBuffer bf = ByteBuffer.allocate(HeaderDecoder.HEAD_LENGHT);
+		bf.put(HeaderDecoder.PACKAGE_TAG);
+		bf.put(header.getEncode());
+		bf.put(header.getEncrypt());
+		bf.put(header.getExtend1());
+		bf.put(header.getExtend2());
+		bf.putInt(header.getSessionId());
+		bf.putInt(data.length);
+		bf.putInt(header.getCommandId());
+		return bf.array();
+	}
 }

@@ -1,7 +1,5 @@
 package com.net.common.codec;
 
-import java.nio.ByteBuffer;
-
 /**
  * 请求和返回的头文件
  * 
@@ -110,19 +108,6 @@ public class Header implements Cloneable {
 
 	public void setCommandId(int commandId) {
 		this.commandId = commandId;
-	}
-
-	public byte[] toByteArray(int dateLength) {
-		ByteBuffer bf = ByteBuffer.allocate(HeaderDecoder.HEAD_LENGHT);
-		bf.put(HeaderDecoder.PACKAGE_TAG);
-		bf.put(encode);
-		bf.put(encrypt);
-		bf.put(extend1);
-		bf.put(extend2);
-		bf.putInt(sessionId);
-		bf.putInt(dateLength);
-		bf.putInt(commandId);
-		return bf.array();
 	}
 	
 	@Override

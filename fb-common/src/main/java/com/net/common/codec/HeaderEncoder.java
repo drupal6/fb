@@ -13,9 +13,9 @@ public class HeaderEncoder extends MessageToByteEncoder<Message>{
 		}
 		Message message = (Message) msg;
 		byte[] buffer = message.getData();
-		Header header = message.getHeader();
+		byte[] header = message.toHeaderByteArray();
 
-		out.writeBytes(header.toByteArray(buffer.length));
+		out.writeBytes(header);
 		out.writeBytes(buffer);
 		return;
 	}
