@@ -1,14 +1,14 @@
 package com.bean.game;
 
-import com.bean.DataObject;
 import com.bean.Option;
-import com.bean.game.proto.PlayerItemBeanMsg.PlayerItemBean;
+import com.bean.DataObject;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.bean.game.proto.PlayerItemBeanMsg.PlayerItemBean;
 
 /**
 * t_player_item 
 * @author 
-* @date   Wed May 10 18:07:56 CST 2017
+* @date   Mon May 15 17:43:46 CST 2017
 */ 
 public class PlayerItem extends DataObject {
 
@@ -18,7 +18,8 @@ public class PlayerItem extends DataObject {
 		this.builder = PlayerItemBean.newBuilder();
 	}
 
-	public PlayerItem(int i){
+	public PlayerItem(PlayerItemBean build){
+		this.builder = build.toBuilder();
 	}
 
 	public void setBuilder(PlayerItemBean.Builder builder) {

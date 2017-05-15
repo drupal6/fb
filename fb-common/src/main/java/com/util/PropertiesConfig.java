@@ -10,7 +10,7 @@ public class PropertiesConfig extends Properties {
 
 	private static final long serialVersionUID = -4706616236202036172L;
 
-	public boolean init(String path) {
+	public boolean load(String path) {
         try  {    
         	InputStream in = new BufferedInputStream(new FileInputStream(path));
         	load(in);    

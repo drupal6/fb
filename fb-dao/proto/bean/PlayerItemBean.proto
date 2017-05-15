@@ -1,4 +1,4 @@
-package com.ly.proto.message;
+package com.proto.message;
 
 option java_package = "com.bean.game.proto";
 option java_outer_classname = "PlayerItemBeanMsg";
