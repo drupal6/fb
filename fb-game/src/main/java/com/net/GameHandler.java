@@ -24,7 +24,7 @@ public class GameHandler extends ChannelInboundHandlerAdapter{
 		
 		ChannelCloseListener listener = new ChannelCloseListener();
 		channel.closeFuture().addListener(listener);
-		System.out.println("GateHandler channelActive");
+		System.out.println("GameHandler channelActive");
 	}
 
 	@Override
@@ -35,9 +35,22 @@ public class GameHandler extends ChannelInboundHandlerAdapter{
 		int sessionId = ClientSessionManager.getInstance().getSessionId(arg0.channel());
 		final ClientSession clientSession = ClientSessionManager.getInstance().getClientSession(sessionId);
 		
-		Message message = (Message) arg1;
-		message.getHeader().setSessionId(sessionId);
-		if(message.getHeader().getCommandId() > 6000000) {  //游戏服处理
+		final Message message = (Message) arg1;
+		message.setSessionId(sessionId);
+		if(false == message.validate()) {
+			System.out.println("GameHandler validate false");
+			return;
+		}
+		if(message.getSid() > 0) {
+			int oldSid = clientSession.getSid();
+			clientSession.setSid(message.getSid());
+			if(message.getSid() != oldSid + 1) {
+				System.out.println("GameHandler clientSession false");
+				return;
+			}
+			
+		}
+		if(message.getCommandId() > 6000000) {  //游戏服处理
 			if(clientSession == null) {
 //			clientSession.getActor().put(runner);
 			}else {
@@ -45,12 +58,12 @@ public class GameHandler extends ChannelInboundHandlerAdapter{
 			}
 			
 		} else {  //转发战斗服
+			ConnectServer.getInstance().write(message);
 			GameActorManager.getBattleActor(sessionId).put(new IRunner() {
 				@Override
 				public Object run() {
 					clientSession.getChannel().writeAndFlush(message);
-					ConnectServer.getInstance().write(message);
-					System.out.println("GateHandler channelRead heard:" + message.getHeader().toString());
+					System.out.println("GameHandler channelRead heard:" + message.toString());
 					return null;
 				}
 			});

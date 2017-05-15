@@ -9,7 +9,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 public class HeaderDecoder extends ByteToMessageDecoder{
 
 	/**头文件长度**/
-	public static final int HEAD_LENGHT = 17;
+	public static final int HEAD_LENGHT = 21;
 	/** 包头标志 **/
 	public static final byte PACKAGE_TAG = 0x01;
 	
@@ -23,10 +23,8 @@ public class HeaderDecoder extends ByteToMessageDecoder{
 		if (tag != PACKAGE_TAG) {
 			throw new Exception("非法协议包");
 		}
-		byte encode = in.readByte();
-		byte encrypt = in.readByte();
-		byte extend1 = in.readByte();
-		byte extend2 = in.readByte();
+		int crc = in.readInt();
+		int sid = in.readInt();
 		int sessionid = in.readInt();
 		int length = in.readInt();
 		int commandId = in.readInt();
@@ -36,10 +34,9 @@ public class HeaderDecoder extends ByteToMessageDecoder{
 			return;
 		}
 
-		Header header = new Header(encode, encrypt, extend1, extend2, sessionid, length, commandId);
 		byte[] data = new byte[length];
 		in.readBytes(data);
-		Message message = new Message(header, data);
+		Message message = new Message(crc, sid, sessionid, commandId, data);
 		out.add(message);
 	}
 

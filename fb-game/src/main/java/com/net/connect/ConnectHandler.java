@@ -21,13 +21,13 @@ public class ConnectHandler extends ChannelInboundHandlerAdapter{
 			throw new Exception("arg1 type is error.");
 		}
 		Message message = (Message) arg1;
-		int sessionId = message.getHeader().getSessionId();
+		int sessionId = message.getSessionId();
 		try {
 			ClientSession clientSession = ClientSessionManager.getInstance().getClientSession(sessionId);
 			
 			//TODO
 			clientSession.writeAndFlush(message);
-			System.out.println("ConnectHandler channelRead heard:" + message.getHeader().toString());
+			System.out.println("ConnectHandler channelRead heard:" + message.toString());
 			
 		} catch (Exception e) {
 			e.printStackTrace();

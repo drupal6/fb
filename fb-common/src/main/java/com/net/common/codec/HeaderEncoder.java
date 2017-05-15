@@ -12,6 +12,7 @@ public class HeaderEncoder extends MessageToByteEncoder<Message>{
 			throw new Exception("msg type is error");
 		}
 		Message message = (Message) msg;
+		message.updateCrc();
 		byte[] buffer = message.getData();
 		byte[] header = message.toHeaderByteArray();
 

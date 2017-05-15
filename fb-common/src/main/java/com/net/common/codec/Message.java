@@ -2,38 +2,72 @@ package com.net.common.codec;
 
 import java.nio.ByteBuffer;
 
+import com.util.CRC16;
+
 /**
  * 消息
- * 
- * @author zhaohui
- * 
  */
 public class Message {
-	/** 头消息 **/
-	private Header header;
+	/** crc16验证 **/
+	private int crc;
+	/** 消息编号**/
+	private int sid;
+	/** 会话ID **/
+	private int sessionId;
+	/** 命令 **/
+	private int commandId;
 	/** 数据 **/
 	private byte[] data;
 
-	public Message() {
-
-	}
-
-	public Message(Header header) {
-		this.header = header;
-	}
-
-	public Message(Header header, byte[] data) {
-		this.header = header;
+	public Message(int crc, int sid, int sessionId, int commandId, byte[] data) {
+		this.crc = crc;
+		this.sid = sid;
+		this.sessionId = sessionId;
+		this.commandId = commandId;
 		this.data = data;
 	}
-
-	public void setContent(int commandId, byte[] data) {
-		header.setCommandId(commandId);
+	public Message(int sid, int sessionId, int commandId, byte[] data) {
+		this.crc = 0;
+		this.sid = sid;
+		this.sessionId = sessionId;
+		this.commandId = commandId;
 		this.data = data;
+	}
+	
+	public int getCrc() {
+		return crc;
+	}
+
+	public void setCrc(int crc) {
+		this.crc = crc;
+	}
+
+	public int getSid() {
+		return sid;
+	}
+
+	public void setSid(int sid) {
+		this.sid = sid;
 	}
 
 	public int getSessionId() {
-		return header.getSessionId();
+		return sessionId;
+	}
+
+	public void setSessionId(int sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public int getLength() {
+		return data.length;
+	}
+
+	public int getCommandId() {
+		return commandId;
+	}
+
+	public void setCommandId(int commandId) {
+		this.commandId = commandId;
 	}
 
 	public byte[] getData() {
@@ -44,29 +78,33 @@ public class Message {
 		this.data = data;
 	}
 
-	public Header getHeader() {
-		return header;
+	public boolean validate() {
+		if(crc <= 0) {
+			return true;
+		}
+		int scrc = CRC16.update(data);
+		scrc ^= (sid & 0xFFFF);
+		return scrc == crc;
 	}
-
-	public void setHeader(Header header) {
-		this.header = header;
+	
+	public void updateCrc() {
+		this.crc = CRC16.update(data) ^ (sid & 0xFFFF);
 	}
-
-	public int getCommand() {
-		return getHeader().getCommandId();
-	}
-
 	
 	public byte[] toHeaderByteArray() {
 		ByteBuffer bf = ByteBuffer.allocate(HeaderDecoder.HEAD_LENGHT);
 		bf.put(HeaderDecoder.PACKAGE_TAG);
-		bf.put(header.getEncode());
-		bf.put(header.getEncrypt());
-		bf.put(header.getExtend1());
-		bf.put(header.getExtend2());
-		bf.putInt(header.getSessionId());
+		bf.putInt(crc);
+		bf.putInt(sid);
+		bf.putInt(sessionId);
 		bf.putInt(data.length);
-		bf.putInt(header.getCommandId());
+		bf.putInt(commandId);
 		return bf.array();
+	}
+	
+	@Override
+	public String toString() {
+		return "crc=" + crc + " sid=" + sid + " sessionId=" + sessionId 
+				+ " commandId=" + commandId + " dataLen=" + data.length;
 	}
 }

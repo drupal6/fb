@@ -10,6 +10,7 @@ public class ClientSession {
 	private Channel channel;
 	private Object fbPlayer;
 	private IActor actor;
+	private int sid = 0;
 	
 	public ClientSession(Channel channel) {
 		this.channel = channel;
@@ -40,5 +41,11 @@ public class ClientSession {
 	}
 	public void setActor(IActor actor) {
 		this.actor = actor;
+	}
+	public int getSid() {
+		return sid;
+	}
+	public void setSid(int sid) {
+		this.sid = sid;
 	}
 }

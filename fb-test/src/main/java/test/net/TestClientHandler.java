@@ -20,7 +20,7 @@ public class TestClientHandler extends ChannelInboundHandlerAdapter{
 			throw new Exception("arg1 type is error.");
 		}
 		Message message = (Message) arg1;
-		System.out.println("TestClientHandler channelRead heard:" + message.getHeader().toString());
+		System.out.println("TestClientHandler channelRead heard:" + message.toString());
 	}
 
 	@Override
