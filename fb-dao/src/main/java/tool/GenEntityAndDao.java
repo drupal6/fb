@@ -32,7 +32,6 @@ public class GenEntityAndDao {
 	private String[] colComment; // 列名注释
 	private boolean f_util = false; // 是否需要导入包java.util.*
 	private boolean f_sql = false; // 是否需要导入包java.sql.*
-	private String dataBase;
 	private String subdivision = ""; // 细分包结构
 
 	/**
@@ -42,7 +41,7 @@ public class GenEntityAndDao {
 	 * @param outPath
 	 * @param stutes 是否覆盖文件
 	 */
-	public GenEntityAndDao(String tname, String outPath, boolean stutes, boolean makeProto) {
+	public GenEntityAndDao(String tname, String outPath, boolean stutes, boolean makeProto, boolean idAutoIncreate) {
 		String[] beanNameT = tname.split("_");
 		String beanName = beanNameT[1].toLowerCase();
 		if (beanNameT.length > 1) {
@@ -163,7 +162,7 @@ public class GenEntityAndDao {
 				/*
 				 * 生成DaoImpl
 				 */
-				String contentDaoI = parseDaoI(colnames, colTypes, colSizes);
+				String contentDaoI = parseDaoI(colnames, colTypes, colSizes, idAutoIncreate);
 				String outputPathDI = directory.getAbsolutePath() + "/src/main/java/"
 						+ this.packageOutPath.replace(".", "/") + "/dao/impl/"
 						+ initcap(className) + "DaoImpl.java";
@@ -276,7 +275,7 @@ public class GenEntityAndDao {
 	 * @return
 	 */
 	private String parseDaoI(String[] colnames, String[] colTypes,
-			int[] colSizes) {
+			int[] colSizes, boolean idAutoIncreate) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("package " + this.packageOutPath + ".dao.impl;\r\n");
 		sb.append("\r\n");
@@ -309,7 +308,7 @@ public class GenEntityAndDao {
 				+ " extends BaseDao implements " + initcap(className + "Dao")
 				+ " {\r\n");
 		// processAllAttrs(sb);// 属性
-		processAllMethodDaoI(sb);// get set方法
+		processAllMethodDaoI(sb, idAutoIncreate);// get set方法
 		sb.append("}\r\n");
 
 		return sb.toString();
@@ -443,10 +442,10 @@ public class GenEntityAndDao {
 	 * 
 	 * @param sb
 	 */
-	private void processAllMethodDaoI(StringBuffer sb) {
+	private void processAllMethodDaoI(StringBuffer sb, boolean idAutoIncreate) {
 		sb.append("\r\n");
 		// create方法
-		createM(sb);
+		createM(sb, idAutoIncreate);
 		// 查询list
 		getListM(sb);
 		// ById查询
@@ -605,7 +604,7 @@ public class GenEntityAndDao {
 	 * 
 	 * @param sb
 	 */
-	private void createM(StringBuffer sb) {
+	private void createM(StringBuffer sb, boolean idAutoIncreate) {
 		sb.append("\t@Override\r\n");
 		sb.append("\tpublic boolean create" + initcap(className) + "("
 				+ initcap(className) + " " + className
@@ -613,7 +612,11 @@ public class GenEntityAndDao {
 		StringBuffer sbT = new StringBuffer();
 		StringBuffer sbF = new StringBuffer();
 		StringBuffer sbP = new StringBuffer();
+		String keySetMethonName = null;
 		for (int i = 0; i < colnames.length; i++) {
+			if(idAutoIncreate && i == 0) {
+				keySetMethonName = initcap(colnames[i]);
+			}
 			String type = colTypes[i];
 			sbT.append(colnamesT[i]);
 			sbF.append("?");
@@ -636,7 +639,15 @@ public class GenEntityAndDao {
 				+ sbT.toString() + ") values (" + sbF.toString() + ");\";\r\n");
 		sb.append("\t\t\tMap<Integer, DbParameter> param = new HashMap<Integer, DbParameter>();\r\n");
 		sb.append(sbP.toString());
-		sb.append("\t\t\tresult = execNoneQuery(sql, param) > -1;\r\n");
+		if(idAutoIncreate) {
+			sb.append("\t\t\tint id = execLastId(sql, param);\r\n");
+			sb.append("\t\t\tif(id > 0) {\r\n");
+			sb.append("\t\t\t\tplayerItem.set"+keySetMethonName+"(id);\r\n");
+			sb.append("\t\t\t\tresult = true;\r\n");
+			sb.append("\t\t\t}\r\n");
+		}else {
+			sb.append("\t\t\tresult = execNoneQuery(sql, param) > -1;\r\n");
+		}
 		sb.append("\t\t\t" + className + ".commitAdd(result);\r\n");
 		sb.append("\t\t}\r\n");
 		sb.append("\t\treturn result;\r\n");

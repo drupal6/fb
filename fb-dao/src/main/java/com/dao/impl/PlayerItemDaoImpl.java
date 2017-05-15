@@ -19,7 +19,7 @@ import com.db.BaseDao;
 /**
 * t_player_item daoImpl实现类的生成
 * @author 
-* @date Mon May 15 17:43:46 CST 2017
+* @date Mon May 15 17:52:57 CST 2017
 */ 
 public class PlayerItemDaoImpl extends BaseDao implements PlayerItemDao {
 
@@ -33,7 +33,11 @@ public class PlayerItemDaoImpl extends BaseDao implements PlayerItemDao {
 			param.put(2, new DbParameter(Types.INTEGER, playerItem.getBaseItemId()));
 			param.put(3, new DbParameter(Types.INTEGER, playerItem.getNum()));
 			param.put(4, new DbParameter(Types.SMALLINT, playerItem.getType()));
-			result = execNoneQuery(sql, param) > -1;
+			int id = execLastId(sql, param);
+			if(id > 0) {
+				playerItem.setId(id);
+				result = true;
+			}
 			playerItem.commitAdd(result);
 		}
 		return result;

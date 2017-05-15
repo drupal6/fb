@@ -8,7 +8,7 @@ import com.bean.game.proto.PlayerItemBeanMsg.PlayerItemBean;
 /**
 * t_player_item 
 * @author 
-* @date   Mon May 15 17:43:46 CST 2017
+* @date   Mon May 15 17:52:57 CST 2017
 */ 
 public class PlayerItem extends DataObject {
 

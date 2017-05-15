@@ -11,12 +11,14 @@ public class Main {
 	private static boolean IS_OVER_RIDE = true;
 	// 是否生成proto文件
 	private static boolean MAKE_PROTO = true;
+	
+	private static boolean ID_AUTOINCREATE = true;
 
 	public static void main(String[] args) {
 		// 类生成的路径
 		String outPath = "com";
 		init();
-		new GenEntityAndDao(TABLE_NAME, outPath, IS_OVER_RIDE, MAKE_PROTO);
+		new GenEntityAndDao(TABLE_NAME, outPath, IS_OVER_RIDE, MAKE_PROTO, ID_AUTOINCREATE);
 	}
 
 	private static void init() {
