@@ -31,7 +31,10 @@ public class RedisTemplateMgr  {
 		return redisAccessor.setBytes(key, value.toByteArray());
 	}
 	
-	public static String hset(String key, String value) {
+	public static String set(String key, byte[] value) {
+		return redisAccessor.setBytes(key, value);
+	}
+	public static String set(String key, String value) {
 		return redisAccessor.setBytes(key, value.getBytes());
 	}
 	
@@ -97,7 +100,7 @@ public class RedisTemplateMgr  {
 		return result;
 	}
 	
-	public static Map<String, String> hgetAll(String key, String field) {
+	public static Map<String, String> hgetAll(String key) {
 		Map<byte[], byte[]> data = redisAccessor.hgetAllBytes(key);
 		if(data == null) {
 			return null;

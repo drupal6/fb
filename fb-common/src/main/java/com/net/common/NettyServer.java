@@ -7,6 +7,7 @@ import com.net.config.Config;
 import com.net.config.ServerConfig;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -42,9 +43,14 @@ public abstract class NettyServer extends AbstractServer{
 		bootstrap.group(bossGroup, workGroup);
 		bootstrap.channel(NioServerSocketChannel.class);
 		bootstrap.childHandler(createHandler());
-		bootstrap.bind(port);
-		
-		logger.info("netty server started.");
+		ChannelFuture f = bootstrap.bind(port);
+		try {
+			f.sync();
+			logger.info("netty server started.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("netty server start fail.");
+		}
 		
 	}
 	

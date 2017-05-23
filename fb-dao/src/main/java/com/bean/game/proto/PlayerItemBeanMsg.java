@@ -82,9 +82,57 @@ public final class PlayerItemBeanMsg {
      * </pre>
      */
     int getType();
+
+    // optional string node = 5;
+    /**
+     * <code>optional string node = 5;</code>
+     *
+     * <pre>
+     * </pre>
+     */
+    boolean hasNode();
+    /**
+     * <code>optional string node = 5;</code>
+     *
+     * <pre>
+     * </pre>
+     */
+    java.lang.String getNode();
+    /**
+     * <code>optional string node = 5;</code>
+     *
+     * <pre>
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getNodeBytes();
+
+    // optional string test1 = 6;
+    /**
+     * <code>optional string test1 = 6;</code>
+     *
+     * <pre>
+     * </pre>
+     */
+    boolean hasTest1();
+    /**
+     * <code>optional string test1 = 6;</code>
+     *
+     * <pre>
+     * </pre>
+     */
+    java.lang.String getTest1();
+    /**
+     * <code>optional string test1 = 6;</code>
+     *
+     * <pre>
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getTest1Bytes();
   }
   /**
-   * Protobuf type {@code com.ly.proto.message.PlayerItemBean}
+   * Protobuf type {@code com.proto.message.PlayerItemBean}
    */
   public static final class PlayerItemBean extends
       com.google.protobuf.GeneratedMessage
@@ -154,6 +202,16 @@ public final class PlayerItemBeanMsg {
               type_ = input.readInt32();
               break;
             }
+            case 42: {
+              bitField0_ |= 0x00000010;
+              node_ = input.readBytes();
+              break;
+            }
+            case 50: {
+              bitField0_ |= 0x00000020;
+              test1_ = input.readBytes();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -168,12 +226,12 @@ public final class PlayerItemBeanMsg {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.bean.game.proto.PlayerItemBeanMsg.internal_static_com_ly_proto_message_PlayerItemBean_descriptor;
+      return com.bean.game.proto.PlayerItemBeanMsg.internal_static_com_proto_message_PlayerItemBean_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.bean.game.proto.PlayerItemBeanMsg.internal_static_com_ly_proto_message_PlayerItemBean_fieldAccessorTable
+      return com.bean.game.proto.PlayerItemBeanMsg.internal_static_com_proto_message_PlayerItemBean_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.bean.game.proto.PlayerItemBeanMsg.PlayerItemBean.class, com.bean.game.proto.PlayerItemBeanMsg.PlayerItemBean.Builder.class);
     }
@@ -290,11 +348,117 @@ public final class PlayerItemBeanMsg {
       return type_;
     }
 
+    // optional string node = 5;
+    public static final int NODE_FIELD_NUMBER = 5;
+    private java.lang.Object node_;
+    /**
+     * <code>optional string node = 5;</code>
+     *
+     * <pre>
+     * </pre>
+     */
+    public boolean hasNode() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string node = 5;</code>
+     *
+     * <pre>
+     * </pre>
+     */
+    public java.lang.String getNode() {
+      java.lang.Object ref = node_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          node_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string node = 5;</code>
+     *
+     * <pre>
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getNodeBytes() {
+      java.lang.Object ref = node_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        node_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional string test1 = 6;
+    public static final int TEST1_FIELD_NUMBER = 6;
+    private java.lang.Object test1_;
+    /**
+     * <code>optional string test1 = 6;</code>
+     *
+     * <pre>
+     * </pre>
+     */
+    public boolean hasTest1() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string test1 = 6;</code>
+     *
+     * <pre>
+     * </pre>
+     */
+    public java.lang.String getTest1() {
+      java.lang.Object ref = test1_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          test1_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string test1 = 6;</code>
+     *
+     * <pre>
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getTest1Bytes() {
+      java.lang.Object ref = test1_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        test1_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       id_ = 0;
       baseItemId_ = 0;
       num_ = 0;
       type_ = 0;
+      node_ = "";
+      test1_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -320,6 +484,12 @@ public final class PlayerItemBeanMsg {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeInt32(4, type_);
       }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getNodeBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getTest1Bytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -344,6 +514,14 @@ public final class PlayerItemBeanMsg {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(4, type_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getNodeBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getTest1Bytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -424,19 +602,19 @@ public final class PlayerItemBeanMsg {
       return builder;
     }
     /**
-     * Protobuf type {@code com.ly.proto.message.PlayerItemBean}
+     * Protobuf type {@code com.proto.message.PlayerItemBean}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
        implements com.bean.game.proto.PlayerItemBeanMsg.PlayerItemBeanOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.bean.game.proto.PlayerItemBeanMsg.internal_static_com_ly_proto_message_PlayerItemBean_descriptor;
+        return com.bean.game.proto.PlayerItemBeanMsg.internal_static_com_proto_message_PlayerItemBean_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.bean.game.proto.PlayerItemBeanMsg.internal_static_com_ly_proto_message_PlayerItemBean_fieldAccessorTable
+        return com.bean.game.proto.PlayerItemBeanMsg.internal_static_com_proto_message_PlayerItemBean_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.bean.game.proto.PlayerItemBeanMsg.PlayerItemBean.class, com.bean.game.proto.PlayerItemBeanMsg.PlayerItemBean.Builder.class);
       }
@@ -469,6 +647,10 @@ public final class PlayerItemBeanMsg {
         bitField0_ = (bitField0_ & ~0x00000004);
         type_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
+        node_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        test1_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -478,7 +660,7 @@ public final class PlayerItemBeanMsg {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.bean.game.proto.PlayerItemBeanMsg.internal_static_com_ly_proto_message_PlayerItemBean_descriptor;
+        return com.bean.game.proto.PlayerItemBeanMsg.internal_static_com_proto_message_PlayerItemBean_descriptor;
       }
 
       public com.bean.game.proto.PlayerItemBeanMsg.PlayerItemBean getDefaultInstanceForType() {
@@ -513,6 +695,14 @@ public final class PlayerItemBeanMsg {
           to_bitField0_ |= 0x00000008;
         }
         result.type_ = type_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.node_ = node_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.test1_ = test1_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -540,6 +730,16 @@ public final class PlayerItemBeanMsg {
         }
         if (other.hasType()) {
           setType(other.getType());
+        }
+        if (other.hasNode()) {
+          bitField0_ |= 0x00000010;
+          node_ = other.node_;
+          onChanged();
+        }
+        if (other.hasTest1()) {
+          bitField0_ |= 0x00000020;
+          test1_ = other.test1_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -764,7 +964,191 @@ public final class PlayerItemBeanMsg {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.ly.proto.message.PlayerItemBean)
+      // optional string node = 5;
+      private java.lang.Object node_ = "";
+      /**
+       * <code>optional string node = 5;</code>
+       *
+       * <pre>
+       * </pre>
+       */
+      public boolean hasNode() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string node = 5;</code>
+       *
+       * <pre>
+       * </pre>
+       */
+      public java.lang.String getNode() {
+        java.lang.Object ref = node_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          node_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string node = 5;</code>
+       *
+       * <pre>
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getNodeBytes() {
+        java.lang.Object ref = node_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          node_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string node = 5;</code>
+       *
+       * <pre>
+       * </pre>
+       */
+      public Builder setNode(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        node_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string node = 5;</code>
+       *
+       * <pre>
+       * </pre>
+       */
+      public Builder clearNode() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        node_ = getDefaultInstance().getNode();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string node = 5;</code>
+       *
+       * <pre>
+       * </pre>
+       */
+      public Builder setNodeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        node_ = value;
+        onChanged();
+        return this;
+      }
+
+      // optional string test1 = 6;
+      private java.lang.Object test1_ = "";
+      /**
+       * <code>optional string test1 = 6;</code>
+       *
+       * <pre>
+       * </pre>
+       */
+      public boolean hasTest1() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string test1 = 6;</code>
+       *
+       * <pre>
+       * </pre>
+       */
+      public java.lang.String getTest1() {
+        java.lang.Object ref = test1_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          test1_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string test1 = 6;</code>
+       *
+       * <pre>
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getTest1Bytes() {
+        java.lang.Object ref = test1_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          test1_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string test1 = 6;</code>
+       *
+       * <pre>
+       * </pre>
+       */
+      public Builder setTest1(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        test1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string test1 = 6;</code>
+       *
+       * <pre>
+       * </pre>
+       */
+      public Builder clearTest1() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        test1_ = getDefaultInstance().getTest1();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string test1 = 6;</code>
+       *
+       * <pre>
+       * </pre>
+       */
+      public Builder setTest1Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        test1_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.proto.message.PlayerItemBean)
     }
 
     static {
@@ -772,14 +1156,14 @@ public final class PlayerItemBeanMsg {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.ly.proto.message.PlayerItemBean)
+    // @@protoc_insertion_point(class_scope:com.proto.message.PlayerItemBean)
   }
 
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_ly_proto_message_PlayerItemBean_descriptor;
+    internal_static_com_proto_message_PlayerItemBean_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_ly_proto_message_PlayerItemBean_fieldAccessorTable;
+      internal_static_com_proto_message_PlayerItemBean_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -789,23 +1173,23 @@ public final class PlayerItemBeanMsg {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\037proto/bean/PlayerItemBean.proto\022\024com.l" +
-      "y.proto.message\"K\n\016PlayerItemBean\022\n\n\002id\030" +
-      "\001 \001(\005\022\022\n\nbaseItemId\030\002 \001(\005\022\013\n\003num\030\003 \001(\005\022\014" +
-      "\n\004type\030\004 \001(\005B(\n\023com.bean.game.protoB\021Pla" +
-      "yerItemBeanMsg"
+      "\n\037proto/bean/PlayerItemBean.proto\022\021com.p" +
+      "roto.message\"h\n\016PlayerItemBean\022\n\n\002id\030\001 \001" +
+      "(\005\022\022\n\nbaseItemId\030\002 \001(\005\022\013\n\003num\030\003 \001(\005\022\014\n\004t" +
+      "ype\030\004 \001(\005\022\014\n\004node\030\005 \001(\t\022\r\n\005test1\030\006 \001(\tB(" +
+      "\n\023com.bean.game.protoB\021PlayerItemBeanMsg"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_com_ly_proto_message_PlayerItemBean_descriptor =
+          internal_static_com_proto_message_PlayerItemBean_descriptor =
             getDescriptor().getMessageTypes().get(0);
-          internal_static_com_ly_proto_message_PlayerItemBean_fieldAccessorTable = new
+          internal_static_com_proto_message_PlayerItemBean_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_ly_proto_message_PlayerItemBean_descriptor,
-              new java.lang.String[] { "Id", "BaseItemId", "Num", "Type", });
+              internal_static_com_proto_message_PlayerItemBean_descriptor,
+              new java.lang.String[] { "Id", "BaseItemId", "Num", "Type", "Node", "Test1", });
           return null;
         }
       };

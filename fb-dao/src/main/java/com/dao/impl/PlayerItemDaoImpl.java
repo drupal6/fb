@@ -19,7 +19,7 @@ import com.db.BaseDao;
 /**
 * t_player_item daoImpl实现类的生成
 * @author 
-* @date Mon May 15 17:52:57 CST 2017
+* @date Tue May 16 09:55:22 CST 2017
 */ 
 public class PlayerItemDaoImpl extends BaseDao implements PlayerItemDao {
 
@@ -27,12 +27,14 @@ public class PlayerItemDaoImpl extends BaseDao implements PlayerItemDao {
 	public boolean createPlayerItem(PlayerItem playerItem) {
 		boolean result = false;
 		if (playerItem.beginAdd()) {
-			String sql = "insert into t_player_item (id,base_item_id,num,type) values (?,?,?,?);";
+			String sql = "insert into t_player_item (id,base_item_id,num,type,node,test1) values (?,?,?,?,?,?);";
 			Map<Integer, DbParameter> param = new HashMap<Integer, DbParameter>();
 			param.put(1, new DbParameter(Types.INTEGER, playerItem.getId()));
 			param.put(2, new DbParameter(Types.INTEGER, playerItem.getBaseItemId()));
 			param.put(3, new DbParameter(Types.INTEGER, playerItem.getNum()));
 			param.put(4, new DbParameter(Types.SMALLINT, playerItem.getType()));
+			param.put(5, new DbParameter(Types.VARCHAR, playerItem.getNode()));
+			param.put(6, new DbParameter(Types.VARCHAR, playerItem.getTest1()));
 			int id = execLastId(sql, param);
 			if(id > 0) {
 				playerItem.setId(id);
@@ -90,12 +92,14 @@ public class PlayerItemDaoImpl extends BaseDao implements PlayerItemDao {
 	public boolean updatePlayerItem(PlayerItem playerItem) {
 		boolean result = false;
 		if (playerItem.beginUpdate()) {
-			String sql = "update t_player_item set base_item_id=?,num=?,type=? where id=?;";
+			String sql = "update t_player_item set base_item_id=?,num=?,type=?,node=?,test1=? where id=?;";
 			Map<Integer, DbParameter> param = new HashMap<Integer, DbParameter>();
 			param.put(1, new DbParameter(Types.INTEGER, playerItem.getBaseItemId()));
 			param.put(2, new DbParameter(Types.INTEGER, playerItem.getNum()));
 			param.put(3, new DbParameter(Types.SMALLINT, playerItem.getType()));
-			param.put(4, new DbParameter(Types.INTEGER, playerItem.getId()));
+			param.put(4, new DbParameter(Types.VARCHAR, playerItem.getNode()));
+			param.put(5, new DbParameter(Types.VARCHAR, playerItem.getTest1()));
+			param.put(6, new DbParameter(Types.INTEGER, playerItem.getId()));
 			result = execNoneQuery(sql, param) > -1;
 			playerItem.commitUpdate(result);
 		}
@@ -108,6 +112,8 @@ public class PlayerItemDaoImpl extends BaseDao implements PlayerItemDao {
 		playerItem.setBaseItemId(rs.getInt("base_item_id"));
 		playerItem.setNum(rs.getInt("num"));
 		playerItem.setType(rs.getInt("type"));
+		playerItem.setNode(rs.getString("node"));
+		playerItem.setTest1(rs.getString("test1"));
 		playerItem.setOp(Option.None);
 		return playerItem;
 	}

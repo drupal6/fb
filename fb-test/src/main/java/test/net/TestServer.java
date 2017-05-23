@@ -13,6 +13,5 @@ public class TestServer {
 		Thread.sleep(1000);
 		new Thread((Runnable) GameServer.getInstance()).start();
 		new Thread((Runnable) ConnectServer.getInstance()).start();
-		
 	}
 }

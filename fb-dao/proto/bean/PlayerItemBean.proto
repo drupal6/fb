@@ -8,5 +8,7 @@ message PlayerItemBean {
 	optional int32 baseItemId	=2;	//基础道具id
 	optional int32 num	=3;	//数量
 	optional int32 type	=4;	//道具类型
+	optional string node	=5;	//
+	optional string test1	=6;	//
 }
 

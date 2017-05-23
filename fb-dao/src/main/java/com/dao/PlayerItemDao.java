@@ -5,7 +5,7 @@ import com.bean.game.PlayerItem;
 /**
 * t_player_item dao接口的生成
 * @author 
-* @date Mon May 15 17:52:57 CST 2017
+* @date Tue May 16 09:55:22 CST 2017
 */ 
 public interface PlayerItemDao {
 

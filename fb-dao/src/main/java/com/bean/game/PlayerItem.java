@@ -8,7 +8,7 @@ import com.bean.game.proto.PlayerItemBeanMsg.PlayerItemBean;
 /**
 * t_player_item 
 * @author 
-* @date   Mon May 15 17:52:57 CST 2017
+* @date   Tue May 16 09:55:22 CST 2017
 */ 
 public class PlayerItem extends DataObject {
 
@@ -18,8 +18,7 @@ public class PlayerItem extends DataObject {
 		this.builder = PlayerItemBean.newBuilder();
 	}
 
-	public PlayerItem(PlayerItemBean build){
-		this.builder = build.toBuilder();
+	public PlayerItem(int id){
 	}
 
 	public void setBuilder(PlayerItemBean.Builder builder) {
@@ -72,6 +71,28 @@ public class PlayerItem extends DataObject {
 
 	public int getType() {
 		return builder.getType();
+	}
+
+	public void setNode(String node) {
+		if(builder.getNode() == null || !builder.getNode().equals(node)) {
+			builder.setNode(node);
+			setOp(Option.Update);
+		}
+	}
+
+	public String getNode() {
+		return builder.getNode();
+	}
+
+	public void setTest1(String test1) {
+		if(builder.getTest1() == null || !builder.getTest1().equals(test1)) {
+			builder.setTest1(test1);
+			setOp(Option.Update);
+		}
+	}
+
+	public String getTest1() {
+		return builder.getTest1();
 	}
 
 	@Override
