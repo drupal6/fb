@@ -1,10 +1,10 @@
 package com.net.http;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,27 +12,21 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
-import io.netty.handler.codec.http.multipart.Attribute;
-import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
-import io.netty.handler.codec.http.multipart.HttpDataFactory;
-import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
-import io.netty.handler.codec.http.multipart.InterfaceHttpData;
-import io.netty.handler.codec.http.multipart.InterfaceHttpData.HttpDataType;
+import io.netty.util.CharsetUtil;
 
 public class SelfRequest {
 	
 	private final Logger logger = LoggerFactory.getLogger(SelfRequest.class);
 	
 	private static final Pattern p = Pattern.compile("(\\d+\\.\\d+\\.\\d+\\.\\d+)\\:+(\\d+)");  
-	private static final HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MAXSIZE);
 	
 	private HttpRequest request;
-	
 	private HttpMethod method;
 	private HttpHeaders headers;
 	
@@ -40,6 +34,8 @@ public class SelfRequest {
 	private String ip;
 	private int port = 0;
 	private Map<String, String> params;
+	private String content;
+	private String uri;
 	
 	private CountDownLatch latch;  
 	
@@ -79,16 +75,21 @@ public class SelfRequest {
 	public String getContentType(){
 		if(contentType == null) {
 			HttpHeaders headers = getHeaders();
-			String typeStr = headers.get("Content-Type").toString();
-			String[] list = typeStr.split(";");
-			contentType = list[0];
-			System.out.println("contentType=" + contentType);
+			String typeStr = headers.get("Content-Type");
+			if(typeStr != null && false == typeStr.isEmpty()) {
+				String[] list = typeStr.split(";");
+				contentType = list[0];
+				System.out.println("contentType=" + contentType);
+			}
 		}
 		return contentType;
 	}
 	
 	public String getUri() {
-		return request.uri();
+		if(uri == null) {
+			uri = request.uri();
+		}
+		return uri;
 	}
 	
 	public String getParam(String key) {
@@ -105,50 +106,34 @@ public class SelfRequest {
 	}
 	
 	public Map<String, String> getParams() throws IOException {
-		if(getMethod().equals(HttpMethod.GET)){
-			if(params == null) {
-				params = new HashMap<String, String>();
-				QueryStringDecoder queryDecoder = new QueryStringDecoder(getUri(), Charset.forName("UTF-8"));
-				Map<String, List<String>> uriAttributes = queryDecoder.parameters();
-				for (Map.Entry<String, List<String>> attr : uriAttributes.entrySet()) {
-					for (String attrVal : attr.getValue()) {
-						params.put(attr.getKey(), attrVal);
+		if(params == null) {
+			params = new HashMap<String, String>();
+			QueryStringDecoder queryStringDecoder = new QueryStringDecoder(request.uri());
+			Map<String, List<String>> requestParams = queryStringDecoder.parameters();
+			if (!requestParams.isEmpty()) {
+				for (Entry<String, List<String>> p: requestParams.entrySet()) {
+					String key = p.getKey();
+					List<String> vals = p.getValue();
+					for (String val : vals) {
+						params.put(key, val);
 					}
 				}
-			}
-		}
-		if(getMethod().equals(HttpMethod.POST)){
-			String contentType = getContentType();
-			if(contentType.equals("application/x-www-form-urlencoded")){
-				if(params == null) {
-					params = new HashMap<String, String>();
-					HttpPostRequestDecoder decoder = new HttpPostRequestDecoder(factory, request, Charset.forName("UTF-8"));
-					List<InterfaceHttpData> datas = decoder.getBodyHttpDatas();
-					for (InterfaceHttpData data : datas) {
-						if(data.getHttpDataType() == HttpDataType.Attribute) {
-							Attribute attribute = (Attribute) data;
-							params.put(attribute.getName(), attribute.getValue());
-						}
-					}
-				}
-			}else{
-				logger.error("post request not suport type. contentType:" + contentType);
 			}
 		}
 		return params;
 	}
 	
-	public String getPostJsonBody() {
-		if(getMethod().equals(HttpMethod.POST)){
-			FullHttpRequest fullRequest = (FullHttpRequest) request;
-			String contentType = getContentType();
-			if(contentType.equals("application/json") || contentType.equals("text/plain")){
-				return fullRequest.content().toString(Charset.forName("UTF-8"));
-			}else {
-				logger.error("post request not suport type. contentType:" + contentType);
+	public String getConetnt() {
+		if(content == null) {
+			if (request instanceof HttpContent) {
+				HttpContent httpContent = (HttpContent) request;
+				ByteBuf content1 = httpContent.content();
+				if (content1.isReadable()) {
+					content = content1.toString(CharsetUtil.UTF_8);
+				}
 			}
 		}
-		return null;
+		return content;
 	}
 	
 	public void sync() {

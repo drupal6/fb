@@ -1,9 +1,13 @@
 package com.net.http;
 
 
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.net.config.HttpClassConfig;
+import com.net.config.loder.HttpClazzConfigLoader;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;
@@ -16,9 +20,9 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 
 public class HttpServer {
-
-	private final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 	
+	private final Logger logger = LoggerFactory.getLogger(HttpServer.class);
+
 	private final int port;
 	private final String configPath;
 	private int bossNum = 1;
@@ -34,6 +38,11 @@ public class HttpServer {
 	}
 	
 	public boolean start() {
+		ServletManager servletManager = loadServlet();
+		if(servletManager == null) {
+			return false;
+		}
+		
 		try {
 			if(ssl) {
 				SelfSignedCertificate ssc = new SelfSignedCertificate();
@@ -41,19 +50,36 @@ public class HttpServer {
 			}
 			bossGroup = new NioEventLoopGroup(bossNum);
 			workGroup = new NioEventLoopGroup(workNum);
+			
 			ServerBootstrap serverBootstrap = new ServerBootstrap();
 			serverBootstrap.group(bossGroup, workGroup)
 			.channel(NioServerSocketChannel.class)
 			.handler(new LoggingHandler(LogLevel.INFO))
-			.childHandler(new HttpChannleInitializer(sslCtx, configPath));
+			.childHandler(new HttpChannleInitializer(sslCtx, servletManager));
 			serverBootstrap.bind(port).sync();
 			logger.error("init http server scuess. port:" + port);
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("init http server fail. message:" + e.getMessage());
 		}
 		return false;
+	}
+	
+	private ServletManager loadServlet() {
+		if(configPath == null || configPath.isEmpty()) {
+			logger.error("init HttpClassConfig config file fialed., configPath is null");
+			return null;
+		}
+		List<HttpClassConfig> configs = HttpClazzConfigLoader.load(configPath);
+		if(configs == null) {
+			return null;
+		}
+		ServletManager servletManager = new ServletManager();
+		for(HttpClassConfig c : configs) {
+			servletManager.addHandler(c.getPath(), c.getClazz());
+			System.out.println("load servlet:" + c.toString());
+		}
+		return servletManager;
 	}
 	
 	public void stop() {

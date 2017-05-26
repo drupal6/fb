@@ -1,10 +1,5 @@
 package com.net.http;
 
-import java.util.List;
-
-import com.net.config.HttpClassConfig;
-import com.net.config.loder.HttpClazzConfigLoader;
-
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -18,18 +13,13 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 public class HttpChannleInitializer extends ChannelInitializer<SocketChannel>{
-
+	
 	private SslContext sslCtx;
 	private ServletManager servletManager;
 	
 	
-	public HttpChannleInitializer(SslContext sslCtx, String configPath) {
-		List<HttpClassConfig> configs = HttpClazzConfigLoader.load(configPath);
-		servletManager = new ServletManager();
-		for(HttpClassConfig c : configs) {
-			servletManager.addHandler(c.getPath(), c.getClazz());
-			System.out.println("load servlet:" + c.toString());
-		}
+	public HttpChannleInitializer(SslContext sslCtx, ServletManager servletManager) {
+		this.servletManager = servletManager;
 		this.sslCtx = sslCtx;
 	}
 	
